@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Sql映射文件: 定义每一条sql语句  -->
+<!-- 
+	namespace:名称空间. 
+			  1.目前可以随便写.
+			  2.如果将来使用的是Mapper接口开发，则namesapce必须写成接口的全类名.
+			         目的:将maapper接口与sql映射文件动态绑定. 
+ -->
+<mapper namespace="com.young.mapper.DepartmentMapper">
+
+    <!--开启缓存:更高级的配置创建了一个 FIFO 缓存,并每隔 60 秒刷新,存数结果对象或列表的 512 个引用,
+    而且返回的对象被认为是只读的,因此在不同线程中的调用者之间修改它们会 导致冲突-->
+    <!--默认的二级缓存-->
+    <!--<cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"></cache>-->
+
+    <!--开启第三方的缓存机制-->
+    <cache type="org.mybatis.caches.ehcache.EhcacheCache"/>
+
+    <!-- public Department getDept(Integer id);-->
+    <select id="getDepartmentById" resultType="Department">
+		SELECT id,dept_name FROM tbl_dept WHERE id=#{id}
+	</select>
+
+    <!--分段查询2：-->
+    <!--public Department getDeptAndEmpsInfo(Integer id);-->
+    <select id="getDeptAndEmpsInfo1" resultMap="DeptEmps">
+		SELECT id,dept_name FROM tbl_dept WHERE  id=#{id}
+	</select>
+    <resultMap id="DeptEmps" type="com.young.bean.Department">
+        <id column="id" property="id"/>
+        <result column="dept_name" property="deptName"/>
+        <collection property="employees" column="{deptId=id}"
+                    select="com.young.mapper.EmployeeMapper.getEmpsByDeptId">
+        </collection>
+    </resultMap>
+
+    <!--联合查询：-->
+    <select id="getDeptAndEmpsInfo" resultMap="DeptEmpsUnitSelect">
+		SELECT d.id d_id,d.dept_name,e.id e_id,e.last_name,e.gender,e.email
+		FROM tbl_dept d JOIN tbl_employee e ON d.id=e.d_id WHERE d.id=#{id}
+	</select>
+    <resultMap id="DeptEmpsUnitSelect" type="com.young.bean.Department">
+        <id column="d_id" property="id"/>
+        <result column="dept_name" property="deptName"/>
+        <collection property="employees" ofType="com.young.bean.Employee">
+            <id column="e_id" property="id"/>
+            <result column="last_name" property="lastName"/>
+            <result column="gender" property="gender"/>
+            <result column="email" property="email"/>
+        </collection>
+    </resultMap>
+
+    <!--public void addBatchDeparts(List<Department> departments);-->
+    <!--批量操作方式一：-->
+    <insert id="addBatchDeparts1">
+        INSERT INTO tbl_dept (dept_name) VALUES
+        <foreach collection="list" separator="," item="dept" open="(" close=")">
+            #{dept.deptName}
+        </foreach>
+    </insert>
+    <!--批量操作方式二：-->
+    <insert id="addBatchDeparts">
+        <foreach collection="param1" item="dept">
+            INSERT INTO tbl_dept (dept_name) VALUES (#{dept.deptName});
+        </foreach>
+    </insert>
+</mapper>

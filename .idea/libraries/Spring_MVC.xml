@@ -1,0 +1,46 @@
+<component name="libraryTable">
+  <library name="Spring MVC" type="spring-mvc">
+    <CLASSES>
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/aopalliance-1.0.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/asm-3.3.1.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/aspectjweaver-1.6.11.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/cglib-2.2.2.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/commons-dbcp-1.2.2.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/commons-logging-1.1.1.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/commons-pool-1.3.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/javassist-3.17.1-GA.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/jstl-1.2.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/junit-4.9.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/log4j-1.2.17.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/log4j-api-2.0-rc1.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/log4j-core-2.0-rc1.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/mybatis-3.2.7.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/mybatis-spring-1.2.2.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/mysql-connector-java-5.1.7-bin.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/slf4j-api-1.7.5.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/slf4j-log4j12-1.7.5.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-aop-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-aspects-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-beans-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-context-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-context-support-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-core-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-expression-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-jdbc-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-jms-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-messaging-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-tx-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-web-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/springmvc和mybatis整合/spring-webmvc-4.1.3.RELEASE.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/c3p0-0.9.1.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/commons-fileupload-1.3.1.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/commons-io-2.2.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/ehcache-core-2.6.8.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/mybatis-ehcache-1.0.3.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/jsqlparser-0.9.5.jar!/" />
+      <root url="jar://D:/第五阶段框架/马幸宇/pagehelper-5.0.0-rc.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

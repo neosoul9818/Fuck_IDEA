@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="Fuck_IDEA:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/Fuck_IDEA_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="Fuck_IDEA/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="Fuck_IDEA" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Spring MVC" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

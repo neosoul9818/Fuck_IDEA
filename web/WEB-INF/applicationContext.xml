@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--IOC容器：数据源，事务控制，数据库操作-->
+    <context:component-scan base-package="com.young">
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.stereotype.Controller"></context:exclude-filter>
+        <context:exclude-filter type="annotation"
+                                expression="org.springframework.web.bind.annotation.ControllerAdvice"></context:exclude-filter>
+    </context:component-scan>
+    <!--引入配置文件-->
+    <context:property-placeholder location="classpath:db.properties"/>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="jdbcUrl" value="${jdbc.url}"></property>
+        <property name="driverClass" value="${jdbc.driver}"></property>
+        <property name="user" value="${jdbc.username}"></property>
+        <property name="password" value="${jdbc.password}"></property>
+    </bean>
+    <!--原来是用jdbctemplate来操作数据库，现在用sqlsession来操作数据库，
+    可以用mybatis-spring的整合jar包中的类SqlSessionFactoryBean-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"></property>
+        <!--mybatis全局配置文件-->
+        <property name="configLocation" value="classpath:mybatis-config.xml"></property>
+        <!--<property name="mapperLocations" value="com.young.mapper"></property>-->
+    </bean>
+    <!--这个MapperScannerConfigurer能帮我们扫描所有mapper的实现，并加入到ioc容器中-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+        <property name="basePackage" value="com.young.mapper"></property>
+     </bean>
+
+    <!--SqlSessionTemplate模板可以来创建一个线程安全的sqlsession对象这样，spring来管理sqlsession-->
+    <bean class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+    </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+    <!--6、开启基于注解的事务 没有提示 -->
+    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
+</beans>

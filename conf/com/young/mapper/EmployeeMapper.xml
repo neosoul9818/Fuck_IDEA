@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- Sql映射文件: 定义每一条sql语句  -->
+<!-- 
+	namespace:名称空间. 
+			  1.目前可以随便写.
+			  2.如果将来使用的是Mapper接口开发，则namesapce必须写成接口的全类名.
+			         目的:将maapper接口与sql映射文件动态绑定. 
+ -->
+<mapper namespace="com.young.mapper.EmployeeMapper">
+
+	<!--开启缓存:更高级的配置创建了一个 FIFO 缓存,并每隔 60 秒刷新,存数结果对象或列表的 512 个引用,
+	而且返回的对象被认为是只读的,因此在不同线程中的调用者之间修改它们会 导致冲突-->
+	<!--默认的二级缓存-->
+	<!--<cache eviction="FIFO" flushInterval="60000" size="512" readOnly="true"></cache>-->
+
+	<!--开启第三方的缓存机制-->
+	<cache  type="org.mybatis.caches.ehcache.EhcacheCache"/>
+	<!--使用第三方缓存，这个类EhcacheCache实现了mybatis的cache接口  -->
+	<!--<cache type="org.mybatis.caches.ehcache.EhcacheCache"></cache>-->
+	
+	<!-- 
+		select: 定义查询的sql语句
+		id:sql语句的唯一标示
+		resultType:声明返回值类型 
+		#{id}: 从传递过来的参数中取出id值
+	 -->
+	<select id="selectEmployee" resultType="Employee">
+		<!-- select * from tbl_employee where id = #{id} -->
+		select id , last_name lastName, gender ,email from tbl_employee where id = #{id}
+	</select>
+	
+	<!-- 
+		接口中的方法名 与 sql语句的id一样: 将接口的方法与sql语句绑定.
+	 -->
+	<!--/*方式一：返回resultTye类型,入参是interger类型，用${_parameter}或#{_parameter}或#{id}*/-->
+	<select id="getEmployeeById" resultType="employee" databaseId="mysql">
+		select * from tbl_employee where id = #{id}
+		<!-- select id,last_name lastName, gender, email from tbl_employee where id = #{id} -->
+	</select>
+	<!--方式二：返回resultMap自定义类型-->
+	<resultMap id="EmpMap" type="employee">
+		<id column="id" property="id"/>
+		<result column="last_name" property="lastName"/>
+		<result column="gender" property="gender"/>
+		<result column="email" property="email"/>
+	</resultMap>
+
+	
+	<select id="getEmployeeById" resultType="Employee" databaseId="oracle">
+		select * from orcl_employee where id = #{id}
+		<!-- select id,last_name lastName, gender, email from tbl_employee where id = #{id} -->
+	</select>
+	
+	<select  id="getEmployeeById" resultType="Employee">
+		select * from tbl_employee where id = #{id}
+		<!-- select id,last_name lastName, gender, email from tbl_employee where id = #{id} -->
+	</select>
+	
+	<!-- 
+		parameterType: 指定参数类型. 可以省略的。 Mybatis会自动识别参数的类型.
+		
+		插入数据并返回主键值:
+			对于支持自增主键的数据库可以使用两个配置:
+			useGeneratedKeys="true": 使用自增主键获取主键值
+			keyProperty:MyBatis获取到主键值后,将这个主键值封装到javaBean的哪个属性上.
+	 -->
+	<!-- public void addEmp(Employee employee ); -->
+	<insert id="addEmp" parameterType="Employee"
+		useGeneratedKeys="true"  keyProperty="id" databaseId="mysql">
+		insert into tbl_employee(last_name,gender,email) 
+			values(#{lastName},#{gender},#{email})
+	</insert>
+	
+	<!-- 
+		不支持主键自增的数据库，使用selectKey子标签来返回主键值
+		selectKey:
+			order:BEFORE/AFTER : selectKey中的sql语句  在 插入sql语句 之前还是之后执行.	
+			keyProperty:Mybatis将获取到的主键值封装给javaBean的哪个属性.
+			resultType：指定主键值的返回值类型.
+	 -->
+	 <!-- BEFORE 
+	<insert id="addEmp" parameterType="com.atguigu.mybaits.beans.Employee"
+		 databaseId="oracle">
+		 <selectKey   order="BEFORE" keyProperty="id" resultType="integer">
+		 		select employee_seq.nextval from dual 
+		 </selectKey>
+		insert into orcl_employee (id ,last_name,gender,email) 
+			values(#{id},#{lastName},#{gender},#{email})
+	</insert>
+	-->
+	<!-- AFTER -->
+	<insert id="addEmp" parameterType="Employee"
+		 databaseId="oracle">
+		 <selectKey   order="AFTER" keyProperty="id" resultType="integer">
+		 		select employee_seq.currval from dual 
+		 </selectKey>
+		insert into orcl_employee (id ,last_name,gender,email) 
+			values(employee_seq.nextval,#{lastName},#{gender},#{email})
+	</insert>
+	
+	
+	
+	
+	
+	
+	
+	<!-- public void updateEmp(Employee employee ); -->
+	<update id="updateEmp" > 
+		update tbl_employee 
+		set 
+			last_name = #{lastName},
+			gender = #{gender},
+			email = #{email}
+		where
+			id = #{id}
+	</update>
+	
+	<!-- public void deleteEmpById(Integer id ); -->
+	<delete id="deleteEmpById" parameterType="integer">
+		delete from tbl_employee where id = #{id}	
+	</delete>
+	
+	
+	<!-- public Employee getEmpByIdAndLastName(Integer id ,String lastName); -->
+	<select id="getEmpByIdAndLastName" resultType="Employee">
+		<bind name="myId" value="_parameter.param1"></bind>
+		<bind name="myln" value="_parameter.param2"></bind>
+		select * from tbl_employee where id = #{myId} and last_name = #{myln}
+	</select>
+	
+	<!-- public Employee getEmpByMap(Map<String,Object> map ); -->
+	<select id="getEmpByMap" resultType="Employee">
+		select * from tbl_employee where id = #{id} and last_name = #{ln} 
+	</select>
+	
+	<!--public Map<String,Object> getEmployeeByIdReturnMap(Integer id);-->
+	<select id="getEmployeeByIdReturnMap" resultType="map">
+		SELECT id,last_name,gender,email FROM tbl_employee WHERE id=#{id}
+	</select>
+
+	<!--public Map<String,Employee> getEmpReturnEmpOfMap(String likeName);-->
+	<select id="getEmpReturnEmpOfMap" resultType="employee">
+		SELECT id,last_name,gender,email FROM tbl_employee WHERE last_name LIKE #{likeName}
+	</select>
+
+	<!--public Employee getEmpAndDeptInfo(Integer id);-->
+	<select id="getEmpAndDeptInfo" resultMap="EmpDeptMap">
+		SELECT e.id e_id,e.last_name,e.gender,e.email,d.id d_id,d.dept_name FROM tbl_employee e LEFT JOIN tbl_dept d
+		 ON e.d_id = d.id WHERE e.id = #{id}
+	</select>
+	<resultMap id="EmpDeptMap" type="employee">
+		<id column="e_id" property="id"/>
+		<result column="last_name" property="lastName"/>
+		<result column="gender" property="gender"/>
+		<result column="email" property="email"/>
+		<!--<association property="department" javaType="Department">
+			<id column="d_id" property="id"/>
+			<result column="dept_name" property="deptName"/>
+		</association>-->
+		<association property="department" javaType="com.young.bean.Department" column="d_id" select="com.young.mapper.DepartmentMapper.getDepartmentById"></association>
+	</resultMap>
+
+	<!--public List<Employee> getAllEmps();-->
+	<select id="getAllEmps" resultMap="empdept">
+		SELECT e.id e_id,e.last_name,e.gender,e.email,d.id d_id,d.dept_name  FROM tbl_employee e LEFT  JOIN tbl_dept d
+		ON e.d_id = d.id
+	</select>
+	<resultMap id="empdept" type="Employee">
+		<id column="e_id" property="id"/>
+		<result column="last_name" property="lastName"/>
+		<result column="gender" property="gender"/>
+		<result column="email" property="email"/>
+		<!--assciation有2种用法：1.联合表查询因为上面的sql语句是联合表的查询方式。-->
+		<association property="department" javaType="Department">
+			<id column="d_id" property="id"/>
+			<result column="dept_name" property="deptName"/>
+		</association>
+
+	</resultMap>
+
+
+	<!--分段查询1:我是主查询-->
+	<select id="getAllEmpsPart" resultMap="empdeptpart">
+		SELECT id,last_name,gender,email,d_id FROM tbl_employee
+	</select>
+	<resultMap id="empdeptpart" type="Employee">
+		<id column="id" property="id"/>
+		<result column="last_name" property="lastName"/>
+		<result column="gender" property="gender"/>
+		<result column="email" property="email"/>
+		<association property="department" javaType="Department" column="d_id" select="com.young.mapper.DepartmentMapper.getDepartmentById"></association>
+	</resultMap>
+
+	<!--分段查询2:我是次查询-->
+	<!--public List<Employee> getEmpsByDeptId(Integer d_id);-->
+	<!--/*因为上条sql中用map类型方式传递的值{deptId=id}所以用列值查询#{deptId}*/-->
+	<select id="getEmpsByDeptId" resultType="com.young.bean.Employee">
+		SELECT id,last_name,gender,email FROM tbl_employee WHERE id=#{deptId}
+	</select>
+
+	<!--public Employee getEmployeeByEmp(Employee employee);-->
+	<select id="getEmployeeByEmp" resultType="com.young.bean.Employee">
+		<bind name="myParam" value="_parameter"></bind>
+		SELECT id,last_name,gender,email FROM tbl_employee WHERE id=#{id} AND last_name = #{lastName}
+	</select>
+</mapper>
